@@ -11,6 +11,7 @@ void define_scheduler(py::module& m, std::string vt_suffix) {
     std::string schedulerClassName = std::string("Scheduler") + vt_suffix;
     py::class_<Scheduler, std::shared_ptr<storm::storage::Scheduler<ValueType>>> scheduler(m, schedulerClassName.c_str(), "A Finite Memory Scheduler");
     scheduler
+            .def(py::init<uint_fast64_t, boost::optional<storm::storage::MemoryStructure>>(), py::arg("number_of_model_states"), py::arg("memory_structure") = boost::none)
             .def("__str__", [](Scheduler const& s) {
                 std::stringstream str;
                 s.printToStream(str);
@@ -22,11 +23,13 @@ void define_scheduler(py::module& m, std::string vt_suffix) {
             .def_property_readonly("partial", &Scheduler::isPartialScheduler, "Is the scheduler partial?")
             .def("get_choice", &Scheduler::getChoice, py::arg("state_index"), py::arg("memory_index") = 0)
             .def("compute_action_support", &Scheduler::computeActionSupport, "nondeterministic_choice_indices"_a)
+            .def("set_choice", &Scheduler::setChoice, py::arg("choice"), py::arg("state_index"), py::arg("memory_index") = 0)
     ;
 
     std::string schedulerChoiceClassName = std::string("SchedulerChoice") + vt_suffix;
     py::class_<SchedulerChoice> schedulerChoice(m, schedulerChoiceClassName.c_str(), "A choice of a finite memory scheduler");
     schedulerChoice
+        .def(py::init<uint_fast64_t>(), py::arg("deterministic_choice"))
         .def_property_readonly("defined", &SchedulerChoice::isDefined, "Is the choice defined by the scheduler?")
         .def_property_readonly("deterministic", &SchedulerChoice::isDeterministic, "Is the choice deterministic (given by a Dirac distribution)?")
         .def("get_deterministic_choice", &SchedulerChoice::getDeterministicChoice, "Get the deterministic choice")

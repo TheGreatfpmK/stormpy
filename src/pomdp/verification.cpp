@@ -20,6 +20,13 @@ void define_verification(py::module& m, std::string const& vtSuffix) {
 
     py::class_<typename storm::builder::BeliefMdpExplorer<storm::models::sparse::Pomdp<ValueType>>> bmdpe(m, ("BeliefMdpExplorer" + vtSuffix).c_str());
     bmdpe.def("set_fsc_values", &storm::builder::BeliefMdpExplorer<storm::models::sparse::Pomdp<ValueType>>::setFMSchedValueList, py::arg("value_list"));
+    bmdpe.def("get_explored_mdp", &storm::builder::BeliefMdpExplorer<storm::models::sparse::Pomdp<ValueType>>::getExploredMdp);
+    bmdpe.def("get_belief_manager", &storm::builder::BeliefMdpExplorer<storm::models::sparse::Pomdp<ValueType>>::getBeliefManager);
+    bmdpe.def("get_belief_id", &storm::builder::BeliefMdpExplorer<storm::models::sparse::Pomdp<ValueType>>::getBeliefId, py::arg("mdp_state_id"));
+
+    py::class_<typename storm::storage::BeliefManager<storm::models::sparse::Pomdp<ValueType>, ValueType>> beman(m, ("BeliefManager" + vtSuffix).c_str());
+    beman.def("get_belief", &storm::storage::BeliefManager<storm::models::sparse::Pomdp<ValueType>, ValueType>::getBeliefStd, py::arg("belief_id"));
+    //beman.def("to_string", &storm::storage::BeliefManager<storm::models::sparse::Pomdp<ValueType>, ValueType>::toString, py::arg("belief_id"));
 
     py::class_<Options> bepmcoptions(m, ("BeliefExplorationModelCheckerOptions" + vtSuffix).c_str());
     bepmcoptions.def(py::init<bool, bool>(), py::arg("discretize"), py::arg("unfold"));
@@ -39,6 +46,8 @@ void define_verification(py::module& m, std::string const& vtSuffix) {
     bepmcoptions.def_readwrite("skip_heuristic_schedulers", &Options::skipHeuristicSchedulers);
     bepmcoptions.def_readwrite("interactive_unfolding", &Options::interactiveUnfolding);
     bepmcoptions.def_readwrite("cut_zero_gap", &Options::cutZeroGap);
+    bepmcoptions.def_readwrite("alpha_vector_test", &Options::alphaVectorTest);
+
     
     py::class_<typename storm::pomdp::modelchecker::BeliefExplorationPomdpModelChecker<storm::models::sparse::Pomdp<ValueType>>::Result> bepmcres(m, ("BeliefExplorationPomdpModelCheckerResult" + vtSuffix).c_str());
     bepmcres.def_readonly("induced_mc_from_scheduler", &storm::pomdp::modelchecker::BeliefExplorationPomdpModelChecker<storm::models::sparse::Pomdp<ValueType>>::Result::schedulerAsMarkovChain);

@@ -25,6 +25,7 @@ void define_formulae(py::module& m) {
         .def("clone", [](storm::logic::Formula const& f) { storm::logic::CloneVisitor cv; return cv.clone(f);})
         .def("substitute", [](storm::logic::Formula const& f, std::map<storm::expressions::Variable, storm::expressions::Expression> const& map) { return f.substitute(map); }, "Substitute variables", py::arg("constants_map"))
         .def("substitute_labels_by_labels", [](storm::logic::Formula const& f, std::map<std::string, std::string> const& labelSubs) {storm::logic::LabelSubstitutionVisitor lsv(labelSubs); return lsv.substitute(f);}, "substitute label occurences", py::arg("replacements"))
+        .def("substitute_reward_model_names", [](storm::logic::Formula const& f, std::map<std::string, std::string> const& map) {return f.substituteRewardModelNames(map);}, "substitute reward model name", py::arg("reward_model_map"))
         .def_property_readonly("is_probability_operator", &storm::logic::Formula::isProbabilityOperatorFormula, "is it a probability operator")
         .def_property_readonly("is_reward_operator", &storm::logic::Formula::isRewardOperatorFormula, "is it a reward operator")
         .def_property_readonly("is_eventually_formula", &storm::logic::Formula::isEventuallyFormula)
