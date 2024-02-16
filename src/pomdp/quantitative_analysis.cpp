@@ -19,15 +19,19 @@ void define_belief_exploration(py::module& m, std::string const& vtSuffix) {
     belmc.def("check_with_environment", py::overload_cast<storm::Environment const&, storm::logic::Formula const&, additionalCutoffValueType<ValueType> const&>(&BeliefExplorationPomdpModelChecker<ValueType>::check), py::arg("environment"), py::arg("formula"), py::arg("cutoff_values"));
     belmc.def("check_with_environment_and_pre_processing_environment", py::overload_cast<storm::Environment const&, storm::logic::Formula const&, storm::Environment const&, additionalCutoffValueType<ValueType> const&>(&BeliefExplorationPomdpModelChecker<ValueType>::check), py::arg("environment"), py::arg("formula"), py::arg("pre_processing_environment"), py::arg("cutoff_values"));
 
+    belmc.def("pause_unfolding_for_cut_off_values", &BeliefExplorationPomdpModelChecker<ValueType>::pauseUnfoldingForCutOffValues);
+    belmc.def("set_unfolding_to_wait", &BeliefExplorationPomdpModelChecker<ValueType>::setUnfoldingToWait);
     belmc.def("pause_unfolding", &BeliefExplorationPomdpModelChecker<ValueType>::pauseUnfolding);
     belmc.def("continue_unfolding", &BeliefExplorationPomdpModelChecker<ValueType>::continueUnfolding);
     belmc.def("terminate_unfolding", &BeliefExplorationPomdpModelChecker<ValueType>::terminateUnfolding);
     belmc.def("is_result_ready", &BeliefExplorationPomdpModelChecker<ValueType>::isResultReady);
     belmc.def("is_exploring", &BeliefExplorationPomdpModelChecker<ValueType>::isExploring);
     belmc.def("get_interactive_result", &BeliefExplorationPomdpModelChecker<ValueType>::getInteractiveResult);
+    belmc.def("get_beliefs_from_exchange", &BeliefExplorationPomdpModelChecker<ValueType>::getExchangeBeliefMap);
     belmc.def("get_status", &BeliefExplorationPomdpModelChecker<ValueType>::getStatus);
     belmc.def("get_interactive_belief_explorer", &BeliefExplorationPomdpModelChecker<ValueType>::getInteractiveBeliefExplorer);
     belmc.def("has_converged", &BeliefExplorationPomdpModelChecker<ValueType>::hasConverged);
+    belmc.def("set_value_in_exchange", &BeliefExplorationPomdpModelChecker<ValueType>::setExchangeValueForBelief, py::arg("belief_id"),  py::arg("value"));
 
     py::class_<typename storm::builder::BeliefMdpExplorer<Pomdp<ValueType>, ValueType>> belmdpexpl(m, ("BeliefMdpExplorer" + vtSuffix).c_str());
     belmdpexpl.def("set_fsc_values", &storm::builder::BeliefMdpExplorer<Pomdp<ValueType>, ValueType>::setFMSchedValueList, py::arg("value_list"));
