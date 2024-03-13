@@ -32,6 +32,8 @@ void define_belief_exploration(py::module& m, std::string const& vtSuffix) {
     belmc.def("get_interactive_belief_explorer", &BeliefExplorationPomdpModelChecker<ValueType>::getInteractiveBeliefExplorer);
     belmc.def("has_converged", &BeliefExplorationPomdpModelChecker<ValueType>::hasConverged);
     belmc.def("set_value_in_exchange", &BeliefExplorationPomdpModelChecker<ValueType>::setExchangeValueForBelief, py::arg("belief_id"),  py::arg("value"));
+    belmc.def("get_exchange_value_map", &BeliefExplorationPomdpModelChecker<ValueType>::getExchangeValueMap);
+    belmc.def("get_exchange_overapproximation_map", &BeliefExplorationPomdpModelChecker<ValueType>::getExchangeValueMap);
 
     py::class_<typename storm::builder::BeliefMdpExplorer<Pomdp<ValueType>, ValueType>> belmdpexpl(m, ("BeliefMdpExplorer" + vtSuffix).c_str());
     belmdpexpl.def("set_fsc_values", &storm::builder::BeliefMdpExplorer<Pomdp<ValueType>, ValueType>::setFMSchedValueList, py::arg("value_list"), py::arg("index"));
@@ -53,6 +55,8 @@ void define_belief_exploration(py::module& m, std::string const& vtSuffix) {
     belexploptions.def_readwrite("skip_heuristic_schedulers", &Options<ValueType>::skipHeuristicSchedulers);
     belexploptions.def_readwrite("interactive_unfolding", &Options<ValueType>::interactiveUnfolding);
     belexploptions.def_readwrite("cut_zero_gap", &Options<ValueType>::cutZeroGap);
+    belexploptions.def_readwrite("resolution_init", &Options<ValueType>::resolutionInit);
+    belexploptions.def_readwrite("discretize", &Options<ValueType>::discretize);
 
     py::class_<typename BeliefExplorationPomdpModelChecker<ValueType>::Result> belexplres(m, ("BeliefExplorationPomdpModelCheckerResult" + vtSuffix).c_str());
     belexplres.def_readonly("induced_mc_from_scheduler", &BeliefExplorationPomdpModelChecker<ValueType>::Result::schedulerAsMarkovChain);
