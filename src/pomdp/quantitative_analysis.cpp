@@ -39,6 +39,14 @@ void define_belief_exploration(py::module& m, std::string const& vtSuffix) {
     belmdpexpl.def("set_fsc_values", &storm::builder::BeliefMdpExplorer<Pomdp<ValueType>, ValueType>::setFMSchedValueList, py::arg("value_list"), py::arg("index"));
     belmdpexpl.def("add_fsc_values", &storm::builder::BeliefMdpExplorer<Pomdp<ValueType>, ValueType>::addFMSchedValueList, py::arg("value_list"));
 
+    py::enum_<storm::builder::ExplorationHeuristic>(m, "BeliefExplorationHeuristic")
+    .value("BreadthFirst",storm::builder::ExplorationHeuristic::BreadthFirst)
+    .value("LowerBoundPrio",storm::builder::ExplorationHeuristic::LowerBoundPrio)
+    .value("UpperBoundPrio",storm::builder::ExplorationHeuristic::UpperBoundPrio)
+    .value("GapPrio",storm::builder::ExplorationHeuristic::GapPrio)
+    .value("ProbabilityPrio",storm::builder::ExplorationHeuristic::ProbabilityPrio)
+    .value("ExcessUncertainty",storm::builder::ExplorationHeuristic::ExcessUncertainty);
+
     py::class_<Options<ValueType>> belexploptions(m, ("BeliefExplorationModelCheckerOptions" + vtSuffix).c_str());
     belexploptions.def(py::init<bool, bool>(), py::arg("discretize"), py::arg("unfold"));
     belexploptions.def_readwrite("use_state_elimination_cutoff", &Options<ValueType>::useStateEliminationCutoff);
