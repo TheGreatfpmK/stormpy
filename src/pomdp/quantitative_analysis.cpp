@@ -65,6 +65,7 @@ void define_belief_exploration(py::module& m, std::string const& vtSuffix) {
     belexploptions.def_readwrite("cut_zero_gap", &Options<ValueType>::cutZeroGap);
     belexploptions.def_readwrite("resolution_init", &Options<ValueType>::resolutionInit);
     belexploptions.def_readwrite("discretize", &Options<ValueType>::discretize);
+    belexploptions.def_readwrite("recompute_initial_value_without_discounting", &Options<ValueType>::recomputeInitialValueWithoutDiscounting);
 
     py::class_<typename BeliefExplorationPomdpModelChecker<ValueType>::Result> belexplres(m, ("BeliefExplorationPomdpModelCheckerResult" + vtSuffix).c_str());
     belexplres.def_readonly("induced_mc_from_scheduler", &BeliefExplorationPomdpModelChecker<ValueType>::Result::schedulerAsMarkovChain);
