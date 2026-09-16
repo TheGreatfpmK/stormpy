@@ -42,7 +42,11 @@ void define_formulae(py::module& m) {
         .def_property_readonly("is_eventually_formula", &storm::logic::Formula::isEventuallyFormula)
         .def_property_readonly("is_bounded_until_formula", &storm::logic::Formula::isBoundedUntilFormula)
         .def_property_readonly("is_until_formula", &storm::logic::Formula::isUntilFormula)
-        .def_property_readonly("is_multi_objective_formula", &storm::logic::Formula::isMultiObjectiveFormula);
+        .def_property_readonly("is_multi_objective_formula", &storm::logic::Formula::isMultiObjectiveFormula)
+        .def_property_readonly("is_discounted_total_reward_formula", &storm::logic::Formula::isDiscountedTotalRewardFormula,
+                               "is it a discounted total reward formula")
+        .def_property_readonly("is_discount_cumulative_reward_formula", &storm::logic::Formula::isDiscountedCumulativeRewardFormula,
+                               "is it a discounted cumulative reward formula");
 
     // Path Formulae
     py::classh<storm::logic::PathFormula> pathFormula(m, "PathFormula", "Formula about the probability of a set of paths in an automaton", formula);
@@ -74,10 +78,12 @@ void define_formulae(py::module& m) {
     // of paths in an automaton", py::base<storm::logic::Formula>());
     py::classh<storm::logic::CumulativeRewardFormula>(m, "CumulativeRewardFormula", "Summed rewards over the paths", pathFormula);
     py::classh<storm::logic::DiscountedCumulativeRewardFormula>(m, "DiscountedCumulativeRewardFormula", "Discounted sum of rewards over the paths", pathFormula)
-        .def_property_readonly("is_discount_cumulative_reward_formula", &storm::logic::DiscountedCumulativeRewardFormula::isDiscountedCumulativeRewardFormula,
-                               "is it a discounted cumulative reward formula")
         .def_property_readonly("discount_factor_double", &storm::logic::DiscountedCumulativeRewardFormula::getDiscountFactor<double>, "the discount factor")
         .def_property_readonly("discount_factor_rational", &storm::logic::DiscountedCumulativeRewardFormula::getDiscountFactor<storm::RationalNumber>,
+                               "the discount factor");
+    py::classh<storm::logic::DiscountedTotalRewardFormula>(m, "DiscountedTotalRewardFormula", "Discounted total reward over the paths", pathFormula)
+        .def_property_readonly("discount_factor_double", &storm::logic::DiscountedTotalRewardFormula::getDiscountFactor<double>, "the discount factor")
+        .def_property_readonly("discount_factor_rational", &storm::logic::DiscountedTotalRewardFormula::getDiscountFactor<storm::RationalNumber>,
                                "the discount factor");
     py::classh<storm::logic::InstantaneousRewardFormula>(m, "InstantaneousRewardFormula", "Instantaneous reward", pathFormula);
     py::classh<storm::logic::LongRunAverageRewardFormula>(m, "LongRunAverageRewardFormula", "Long run average reward", pathFormula);
