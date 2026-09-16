@@ -72,7 +72,13 @@ void define_formulae(py::module& m) {
     // Reward Path Formulae
     // py::class_<storm::logic::RewardPathFormula, std::shared_ptr<storm::logic::RewardPathFormula>(m, "RewardPathFormula", "Formula about the rewards of a set
     // of paths in an automaton", py::base<storm::logic::Formula>());
-    py::classh<storm::logic::CumulativeRewardFormula>(m, "CumulativeRewardFormula", "Summed rewards over a the paths", pathFormula);
+    py::classh<storm::logic::CumulativeRewardFormula>(m, "CumulativeRewardFormula", "Summed rewards over the paths", pathFormula);
+    py::classh<storm::logic::DiscountedCumulativeRewardFormula>(m, "DiscountedCumulativeRewardFormula", "Discounted sum of rewards over the paths", pathFormula)
+        .def_property_readonly("is_discount_cumulative_reward_formula", &storm::logic::DiscountedCumulativeRewardFormula::isDiscountedCumulativeRewardFormula,
+                               "is it a discounted cumulative reward formula")
+        .def_property_readonly("discount_factor_double", &storm::logic::DiscountedCumulativeRewardFormula::getDiscountFactor<double>, "the discount factor")
+        .def_property_readonly("discount_factor_rational", &storm::logic::DiscountedCumulativeRewardFormula::getDiscountFactor<storm::RationalNumber>,
+                               "the discount factor");
     py::classh<storm::logic::InstantaneousRewardFormula>(m, "InstantaneousRewardFormula", "Instantaneous reward", pathFormula);
     py::classh<storm::logic::LongRunAverageRewardFormula>(m, "LongRunAverageRewardFormula", "Long run average reward", pathFormula);
     // py::class_<storm::logic::ReachabilityRewardFormula, std::shared_ptr<storm::logic::ReachabilityRewardFormula>>(m, "ReachabilityRewardFormula",
