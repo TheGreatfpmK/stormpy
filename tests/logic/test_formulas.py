@@ -103,7 +103,7 @@ class TestFormulas:
         formula = properties[0].raw_formula
         subformula = formula.subformula
         assert type(subformula) == stormpy.logic.DiscountedCumulativeRewardFormula
-        assert subformula.is_discount_cumulative_reward_formula
+        assert subformula.is_discounted_cumulative_reward_formula
         assert subformula.discount_factor_double == pytest.approx(0.9)
         assert subformula.discount_factor_rational == stormpy.Rational("0.9")
         assert not subformula.is_discounted_total_reward_formula

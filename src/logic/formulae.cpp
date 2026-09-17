@@ -45,7 +45,7 @@ void define_formulae(py::module& m) {
         .def_property_readonly("is_multi_objective_formula", &storm::logic::Formula::isMultiObjectiveFormula)
         .def_property_readonly("is_discounted_total_reward_formula", &storm::logic::Formula::isDiscountedTotalRewardFormula,
                                "is it a discounted total reward formula")
-        .def_property_readonly("is_discount_cumulative_reward_formula", &storm::logic::Formula::isDiscountedCumulativeRewardFormula,
+        .def_property_readonly("is_discounted_cumulative_reward_formula", &storm::logic::Formula::isDiscountedCumulativeRewardFormula,
                                "is it a discounted cumulative reward formula");
 
     // Path Formulae
